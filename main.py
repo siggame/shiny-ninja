@@ -49,15 +49,21 @@ def parseData():
 
 if __name__ == '__main__':
 
-  if len( sys.argv ) <= 1:
-    import_file( './data.py' )
-  else:
-    import_file( sys.argv[1] )
+  parser = argparse.ArgumentParser( description='Run The Codegen To Automatically Generate Some Codez' )
+  parser.add_argument( '-d', '--data', dest=dataPyPath, default='./data.py', help='The Path To data.py' )
+  parser.add_argument( '-o', '--output', dest=outDir, default='./output', help='The output of the codegen.' )
+
+  args = parser.parse_args()
+
+  import_file( args.dataPyPath );
 
   objects = parseData()
   
   import writeC
   writeC.write(copy(objects))
+
+  import writeVisClient
+  writeVisClient(copy(objects))
 
   import writeServer
   writeServer.write(copy(objects))
@@ -70,7 +76,6 @@ if __name__ == '__main__':
   
   import writePython
   writePython.write(objects)
-  
   
   import writeVisualizer
   writeVisualizer.write(objects)
