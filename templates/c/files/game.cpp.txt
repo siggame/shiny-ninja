@@ -41,9 +41,6 @@ namespace Windows
 
 using namespace std;
 
-namespace client
-{
-
 DLLEXPORT Connection* createConnection()
 {
   Connection* c = new Connection;
@@ -394,5 +391,3 @@ DLLEXPORT ${conversions[datum.type]} get${capitalize(datum.name)}(Connection* c)
   return c->${datum.name};
 }
 % endfor
-
-}

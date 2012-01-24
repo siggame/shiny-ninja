@@ -24,9 +24,6 @@
 
 using namespace std;
 
-namespace client
-{
-
 static int sock_server;
 
 /*                                networking functions                          */
@@ -235,6 +232,4 @@ DLLEXPORT char* escape_string(const char* string)
   assert(index == size);
   
   return result;
-}
-
 }

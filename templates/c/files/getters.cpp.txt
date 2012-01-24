@@ -1,8 +1,5 @@
 #include "getters.h"
 
-namespace client
-{
-
 % for model in models:
 %   for datum in model.data:
 DLLEXPORT ${conversions[datum.type]} ${lowercase(model.name)}Get${capitalize(datum.name)}(_${model.name}* ptr)
@@ -23,4 +20,3 @@ ${conversions[arg.type]} ${arg.name}\
 %   endfor
 % endfor
 
-}

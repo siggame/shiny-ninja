@@ -8,9 +8,6 @@
 #define DLLEXPORT
 #endif
 
-namespace client
-{
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -34,7 +31,5 @@ ${conversions[arg.type]} ${arg.name}\
 #ifdef __cplusplus
 }
 #endif
-
-}
 
 #endif
