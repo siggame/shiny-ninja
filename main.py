@@ -50,8 +50,8 @@ def parseData():
 if __name__ == '__main__':
 
   parser = argparse.ArgumentParser( description='Run The Codegen To Automatically Generate Some Codez' )
-  parser.add_argument( '-d', '--data', dest=dataPyPath, default='./data.py', help='The Path To data.py' )
-  parser.add_argument( '-o', '--output', dest=outDir, default='./output', help='The output of the codegen.' )
+  parser.add_argument( '-d', '--data', dest='dataPyPath', default='./data.py', help='The Path To data.py' )
+  parser.add_argument( '-o', '--output', dest='outDir', default='./output', help='The output of the codegen.' )
 
   args = parser.parse_args()
 
