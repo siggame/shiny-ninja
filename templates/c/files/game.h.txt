@@ -23,6 +23,9 @@
 
 #endif
 
+namespace client
+{
+
 struct Connection
 {
   int socket;
@@ -107,5 +110,7 @@ DLLEXPORT int get${model.name}Count(Connection* c);
 #ifdef __cplusplus
 }
 #endif
+
+}
 
 #endif

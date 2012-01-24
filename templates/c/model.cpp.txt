@@ -7,6 +7,9 @@
 #include "${dependency.name}.h"
 % endfor
 
+namespace client
+{
+
 ${model.name}::${model.name}(_${model.name}* pointer)
 {
     ptr = (void*) pointer;
@@ -80,4 +83,6 @@ std::ostream& operator<<(std::ostream& stream,${model.name} ob)
   stream << "${datum.name}: " << ((_${model.name}*)ob.ptr)->${datum.name}  <<'\n';
 %   endfor
   return stream;
+}
+
 }

@@ -12,6 +12,9 @@
 #include "${model.name}.h"
 % endfor
 
+namespace client
+{
+
 /// \brief A basic AI interface.
 
 ///This class implements most the code an AI would need to interface with the lower-level game code.
@@ -56,5 +59,7 @@ public:
 
   bool startTurn();
 };
+
+}
 
 #endif

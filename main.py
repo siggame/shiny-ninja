@@ -1,9 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
-import data
+import sys
 import structures
+import argparse
 from util import *
 from copy import copy
+
+def import_file(full_path_to_module):
+  try:
+    import os
+    module_dir, module_file = os.path.split(full_path_to_module)
+    module_name, module_ext = os.path.splitext(module_file)
+    save_cwd = os.getcwd()
+    os.chdir(module_dir)
+    module_obj = __import__(module_name)
+    module_obj.__file__ = full_path_to_module
+    globals()[module_name] = module_obj
+    os.chdir(save_cwd)
+  except:
+    raise ImportError
 
 def insertModel(list, model):
   if model.parent and model.parent not in list:
@@ -33,6 +48,12 @@ def parseData():
 
 
 if __name__ == '__main__':
+
+  if len( sys.argv ) <= 1:
+    import_file( './data.py' )
+  else:
+    import_file( sys.argv[1] )
+
   objects = parseData()
   
   import writeC

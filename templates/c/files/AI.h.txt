@@ -3,6 +3,8 @@
 
 #include "BaseAI.h"
 
+namespace client
+
 ///The class implementing gameplay logic.
 class AI: public BaseAI
 {
@@ -14,5 +16,7 @@ public:
   virtual bool run();
   virtual void end();
 };
+
+}
 
 #endif

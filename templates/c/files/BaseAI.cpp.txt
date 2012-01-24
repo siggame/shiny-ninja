@@ -5,6 +5,9 @@
 #include "BaseAI.h"
 #include "game.h"
 
+namespace client
+{
+
 % for datum in globals + constants:
 ${conversions[datum.type]} BaseAI::${datum.name}()
 {
@@ -38,3 +41,5 @@ bool BaseAI::startTurn()
 
 BaseAI::BaseAI(Connection* conn) : c(conn) {}
 BaseAI::~BaseAI() {}
+
+}

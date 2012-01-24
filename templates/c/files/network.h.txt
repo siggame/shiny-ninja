@@ -12,6 +12,9 @@
 #define DLLEXPORT
 #endif
 
+namespace client
+{
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -24,4 +27,7 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
+
+}
+
 #endif

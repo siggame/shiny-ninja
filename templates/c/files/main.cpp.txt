@@ -11,6 +11,7 @@
 #include "game.h"
 
 using namespace std;
+using namespace client;
 
 int main(int argc, char** argv)
 {

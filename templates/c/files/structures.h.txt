@@ -4,6 +4,9 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
+namespace client
+{
+
 struct Connection;
 %  for model in models:
 struct _${model.name};
@@ -19,5 +22,7 @@ struct _${model.name}
 %  endfor
 };
 % endfor
+
+}
 
 #endif

@@ -9,6 +9,10 @@
 % if model.parent:
 #include "${model.parent.name}.h"
 % endif
+
+namespace client
+{
+
 % for dependency in depends(model):
 class ${dependency.name};
 % endfor
@@ -70,6 +74,8 @@ ${conversions[arg.type]} ${arg.name}\
 
   friend std::ostream& operator<<(std::ostream& stream, ${model.name} ob);
 };
+
+}
 
 #endif
 
