@@ -63,7 +63,7 @@ if __name__ == '__main__':
   writeC.write(copy(objects))
 
   import writeVisClient
-  writeVisClient(copy(objects))
+  writeVisClient.write(copy(objects))
 
   import writeServer
   writeServer.write(copy(objects))
