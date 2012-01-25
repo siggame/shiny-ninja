@@ -4,7 +4,7 @@
 #define ${model.name.upper()}_H
 
 #include <iostream>
-#include "structures.h"
+#include "vc_structures.h"
 
 % if model.parent:
 #include "${model.parent.name}.h"
