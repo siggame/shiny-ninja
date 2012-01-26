@@ -4,6 +4,9 @@
 
 #include <iostream>
 
+namespace parser
+{
+
 % for model in models:
 
 std::ostream& operator<<(std::ostream& stream, ${model.name} ob)
@@ -65,3 +68,5 @@ Game::Game()
 {
   winner = -1;
 }
+
+} // parser

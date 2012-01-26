@@ -11,6 +11,9 @@
 
 #include "smartpointer.h"
 
+namespace parser
+{
+
 % for i, animation in enumerate(animations):
 const int ${animation.name.upper()} = ${i};
 % endfor
@@ -86,5 +89,7 @@ struct Game
 
   Game();
 };
+
+} // parser
 
 #endif
