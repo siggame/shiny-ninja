@@ -28,16 +28,18 @@ def insertModel(list, model):
 
 def parseData():
   aspects = data.aspects
-
+  data.Player = structures.Model("Player", data=[structures.Variable("playerName", str, "Player's Name")])
   if 'timer' in aspects:
     import timerAspect
     timerAspect.install(data)
-
+  data.Player.addData(data.playerData)
+  data.Player.addFunctions(data.playerFunctions)
   models = []
   globals = data.globals
   constants = data.constants
   animations = []
   gameName = data.gameName
+
   for i in members(data):
     if isinstance(i, structures.Model):
       insertModel(models, i)
@@ -49,16 +51,16 @@ def parseData():
 
 if __name__ == '__main__':
 
-  parser = argparse.ArgumentParser( description='Run The Codegen To Automatically Generate Some Codez' )
-  parser.add_argument( '-d', '--data', dest='dataPyPath', default='./data.py', help='The Path To data.py' )
-  parser.add_argument( '-o', '--output', dest='outDir', default='./output', help='The output of the codegen.' )
+  parser = argparse.ArgumentParser(description='Run The Codegen To Automatically Generate Some Codez')
+  parser.add_argument('-d', '--data', dest='dataPyPath', default='./data.py', help='The Path To data.py')
+  parser.add_argument('-o', '--output', dest='outDir', default='./output', help='The output of the codegen.')
 
   args = parser.parse_args()
 
-  import_file( args.dataPyPath );
+  import_file(args.dataPyPath);
 
   objects = parseData()
-  
+
   import writeC
   writeC.write(copy(objects))
 
@@ -67,16 +69,16 @@ if __name__ == '__main__':
 
   import writeServer
   writeServer.write(copy(objects))
-  
+
   import writeJava
   writeJava.write(objects)
-  
+
   import writeCS
   writeCS.write(objects)
-  
+
   import writePython
   writePython.write(objects)
-  
+
   import writeVisualizer
   writeVisualizer.write(objects)
-  
+

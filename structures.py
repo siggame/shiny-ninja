@@ -20,7 +20,7 @@ class Model(object):
     self.type = 'Model'
 
     if 'parent' in kwargs:
-      self.parent =  kwargs['parent']
+      self.parent = kwargs['parent']
       self.data = copy(self.parent.data)
       self.functions = copy(self.parent.functions)
       self.properties = copy(self.parent.properties)
@@ -54,7 +54,7 @@ class Variable(object):
   type = None
   doc = ''
 
-  def __init__(self, name, type, doc = ''):
+  def __init__(self, name, type, doc=''):
     self.name = name
     self.type = type
     self.doc = doc
@@ -77,7 +77,7 @@ class Function(object):
   result = None
   doc = ''
 
-  def __init__(self, name, arguments = [], result = None, doc=''):
+  def __init__(self, name, arguments=[], result=None, doc=''):
     self.name = name
     self.arguments = arguments
     self.result = result
