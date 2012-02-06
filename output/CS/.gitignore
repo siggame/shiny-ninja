@@ -6,3 +6,4 @@ libclient.so
 *.class
 *.jar
 *.pyc
+*.exe
