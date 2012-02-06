@@ -12,7 +12,7 @@ def install():
       currentTime = time()
       # If this isn't the first time, calculate the time elapsed
       try: timeSpent = currentTime - self.turnStartTime
-      except: timeSpent = 0
+      except AttributeError: timeSpent = 0
       # Make certain this game is tracked by the timeout tick
       if self not in games:
         games.append(self)

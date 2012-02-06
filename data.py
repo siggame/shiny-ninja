@@ -1,7 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 from structures import *
 
-aspects = []
+aspects = ['timer']
 
 gameName = "chess"
 

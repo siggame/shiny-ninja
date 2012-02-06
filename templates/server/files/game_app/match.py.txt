@@ -35,6 +35,10 @@ class Match(DefaultGameWorld):
       return "Game is full"
     if type == "player":
       self.players.append(connection)
+      try:
+        self.addObject(Player, [connection.screenName])
+      except TypeError:
+        raise TypeError("Someone forgot to add the extra attributes to the Player object initialization")
     elif type == "spectator":
       self.spectators.append(connection)
       #If the game has already started, send them the ident message
