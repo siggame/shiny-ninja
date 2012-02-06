@@ -12,7 +12,7 @@ public class Client {
   [DllImport("client")]
   public static extern int createGame(IntPtr connection);
   [DllImport("client")]
-  public static extern int joinGame(IntPtr connection, int id);
+  public static extern int joinGame(IntPtr connection, int id, string playerType);
 
   [DllImport("client")]
   public static extern void endTurn(IntPtr connection);

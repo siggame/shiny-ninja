@@ -31,7 +31,7 @@ public class main
     }
     else
     {
-      Client.joinGame(connection, Int32.Parse(args[1]));
+      Client.joinGame(connection, Int32.Parse(args[1]), "player");
     }
     while(Client.networkLoop(connection) != 0)
     {

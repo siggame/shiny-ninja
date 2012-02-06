@@ -139,14 +139,14 @@ DLLEXPORT int createGame(Connection* c)
   return c->gameNumber;
 }
 
-DLLEXPORT int joinGame(Connection* c, int gameNum)
+DLLEXPORT int joinGame(Connection* c, int gameNum, const char* playerType)
 {
   sexp_t* expression;
   stringstream expr;
 
   c->gameNumber = gameNum;
 
-  expr << "(join-game " << c->gameNumber << ")";
+  expr << "(join-game " << c->gameNumber << " "<< playerType << ")";
   send_string(c->socket, expr.str().c_str());
 
   char* reply = rec_string(c->socket);

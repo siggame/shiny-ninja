@@ -43,8 +43,8 @@ class GameApp(AccountsAppMixin, BaseApp):
 
   @protocolmethod
   @requireLogin
-  @requireTypes(None, int)
-  def joinGame(self, gameNumber):
+  @requireTypes(None, int, str)
+  def joinGame(self, gameNumber, playerType):
     """ Joins the specified game"""    
     if self.game is not None:
       return ["join-game-denied", "You are already in a game"]
@@ -54,7 +54,7 @@ class GameApp(AccountsAppMixin, BaseApp):
       if gameNumber == 0: #join any option, joins available game with lowest number
         for game in GameApp.games:
           self.game = GameApp.games[game]
-          temp = self.game.addPlayer(self)
+          temp = self.game.addPlayer(self, playerType)
           if temp and type(temp) == type(bool()):
             gameNumber = game
             break
@@ -64,7 +64,7 @@ class GameApp(AccountsAppMixin, BaseApp):
           return ["join-game-denied", "No games available"]
       else: #join a specific game, gameNumber >= 1
         self.game = GameApp.games[gameNumber]
-        temp = self.game.addPlayer(self)
+        temp = self.game.addPlayer(self, playerType)
         if type(temp) != type(bool()) or not temp:
           self.game = None
           return ["join-game-denied", "Game is full"]

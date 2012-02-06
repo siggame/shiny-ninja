@@ -56,7 +56,7 @@ extern "C"
 
   DLLEXPORT int serverLogin(Connection* c, const char* username, const char* password);
   DLLEXPORT int createGame(Connection* c);
-  DLLEXPORT int joinGame(Connection* c, int id);
+  DLLEXPORT int joinGame(Connection* c, int id, const char* playerType);
 
   DLLEXPORT void endTurn(Connection* c);
   DLLEXPORT void getStatus(Connection* c);
