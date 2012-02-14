@@ -7,11 +7,11 @@ import util
 import os.path, os
 
 class Writer(object):
-  language = None
+  module = None
 
   def getLocalData(self):
     data = {}
-    data['conversions'] = conversions.python
+    data['conversions'] = getattr(conversions, self.module)
     data['capitalize'] = util.capitalize
     data['lowercase'] = util.lowercase
     data['Model'] = structures.Model
@@ -47,5 +47,5 @@ class MakoWriter(object):
 
 
 class PythonWriter(Writer):
-  language = 'python'
+  module = 'python'
 
