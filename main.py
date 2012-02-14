@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
-import sys
 import structures
 import argparse
 from util import *
-from copy import copy
 
 def import_file(full_path_to_module):
   try:
@@ -61,24 +59,6 @@ if __name__ == '__main__':
 
   objects = parseData()
 
-  import writeC
-  writeC.write(copy(objects))
-
-  import writeVisClient
-  writeVisClient.write(copy(objects))
-
-  import writeServer
-  writeServer.write(copy(objects))
-
-  import writeJava
-  writeJava.write(objects)
-
-  import writeCS
-  writeCS.write(objects)
-
-  import writePython
-  writePython.write(objects)
-
-  import writeVisualizer
-  writeVisualizer.write(objects)
-
+  import writers
+  w = writers.PythonWriter()
+  w.write('templates/python', 'output/python', objects)
