@@ -90,10 +90,9 @@ class ServerWriter(ModuleWriter):
 
 class CWriter(ModuleWriter):
   module = 'c'
-  def getLocalData(self):
-    data = ModuleWriter.getLocalData(self)
-    data['cppconversions'] = conversions.cpp
-    return data
+
+class CppWriter(ModuleWriter):
+  module = 'c'
 
 class JavaWriter(ModuleWriter):
   module = 'java'

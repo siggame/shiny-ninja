@@ -56,6 +56,8 @@ if __name__ == '__main__':
   w.write('templates/server', os.path.join(output, 'server'), objects)
   w = writers.CWriter()
   w.write('templates/c', os.path.join(output, 'c'), objects)
+  w = writers.CppWriter()
+  w.write('templates/cpp', os.path.join(output, 'cpp'), objects)
   w = writers.JavaWriter()
   w.write('templates/java', os.path.join(output, 'java'), objects)
   w = writers.CSWriter()
