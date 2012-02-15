@@ -66,3 +66,5 @@ if __name__ == '__main__':
   w.write('templates/server', 'output/server', objects)
   w = writers.CWriter()
   w.write('templates/c', 'output/c', objects)
+  w = writers.JavaWriter()
+  w.write('templates/java', 'output/java', objects)

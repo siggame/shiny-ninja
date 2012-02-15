@@ -67,6 +67,8 @@ class ModuleWriter(object):
     data['capitalize'] = util.capitalize
     data['lowercase'] = util.lowercase
     data['Model'] = structures.Model
+    data['dashify'] = util.dashify
+    data['depends'] = util.depends
     return data
 
   def write(self, source, dest, data):
@@ -93,6 +95,11 @@ class CWriter(ModuleWriter):
   def getLocalData(self):
     data = ModuleWriter.getLocalData(self)
     data['cppconversions'] = conversions.cpp
-    data['dashify'] = util.dashify
-    data['depends'] = util.depends
     return data
+
+class JavaWriter(ModuleWriter):
+  module = 'java'
+  writers = { 'files' : MakoWriter(),
+              'model' : IterWriter(MakoWriter(), 'model', 'models'),
+              'static' : StaticWriter()
+              }
