@@ -43,7 +43,7 @@ class StaticWriter(object):
 
 
   def writeFile(self, infile, outfile, data):
-    shutil.copyfile(infile, outfile)
+    shutil.copy2(infile, outfile)
 
 class IterWriter(object):
   def __init__(self, writer, item, list):
@@ -80,7 +80,9 @@ class ModuleWriter(object):
 
 class PythonWriter(ModuleWriter):
   module = 'python'
-  writers = { '.' : MakoWriter() }
+  writers = { 'dynamic' : MakoWriter(),
+              'static' : StaticWriter()
+              }
 
 class ServerWriter(ModuleWriter):
   module = 'server'
@@ -88,7 +90,7 @@ class ServerWriter(ModuleWriter):
 
 class CWriter(ModuleWriter):
   module = 'c'
-  writers = { 'files' : MakoWriter(),
+  writers = { 'dynamic' : MakoWriter(),
               'model' : IterWriter(MakoWriter(), 'model', 'models'),
               'static' : StaticWriter()
               }
@@ -99,13 +101,13 @@ class CWriter(ModuleWriter):
 
 class JavaWriter(ModuleWriter):
   module = 'java'
-  writers = { 'files' : MakoWriter(),
+  writers = { 'dynamic' : MakoWriter(),
               'model' : IterWriter(MakoWriter(), 'model', 'models'),
               'static' : StaticWriter()
               }
 class CSWriter(ModuleWriter):
   module = 'cs'
-  writers = { 'files' : MakoWriter(),
+  writers = { 'dynamic' : MakoWriter(),
               'model' : IterWriter(MakoWriter(), 'model', 'models'),
               'static' : StaticWriter()
               }
@@ -113,7 +115,7 @@ class CSWriter(ModuleWriter):
 
 class VisualizerWriter(ModuleWriter):
   module = 'c'
-  writers = { 'files' : MakoWriter(),
+  writers = { 'dynamic' : MakoWriter(),
               'static' : StaticWriter()
               }
 
