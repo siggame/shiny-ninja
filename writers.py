@@ -103,3 +103,9 @@ class JavaWriter(ModuleWriter):
               'model' : IterWriter(MakoWriter(), 'model', 'models'),
               'static' : StaticWriter()
               }
+class CSWriter(ModuleWriter):
+  module = 'cs'
+  writers = { 'files' : MakoWriter(),
+              'model' : IterWriter(MakoWriter(), 'model', 'models'),
+              'static' : StaticWriter()
+              }

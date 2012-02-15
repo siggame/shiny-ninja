@@ -1,49 +1,38 @@
-using System;
-using System.Runtime.InteropServices;
-
+import com.sun.jna.Pointer;
 
 ///${model.doc}
-public \
 % if model.type == 'virtual':
 abstract \
 % endif
 class ${model.name}\
 % if model.parent:
-: ${model.parent.name} \
+ extends ${model.parent.name} \
 % endif
 
 {
 % if not model.parent:
-  public IntPtr ptr;
-  protected int ID;
-  protected int iteration;
-%endif
-  
-  public ${model.name}()
-  {
-  }
-  
-  public ${model.name}(IntPtr p)
+  Pointer ptr;
+  int ID;
+  int iteration;
+  public ${model.name}(Pointer p)
   {
     ptr = p;
-    ID = Client.${lowercase(model.name)}GetId(ptr);
+    ID = Client.INSTANCE.${lowercase(model.name)}GetId(ptr);
     iteration = BaseAI.iteration;
   }
-
-  public \
-% if model.type == 'virtual':
-abstract \
-%endif
-% if model.parent:
-override \
+% else:
+  public ${model.name}(Pointer p)
+  {
+    super(p);
+  }
 % endif
 % if model.type == 'virtual':
-bool validify();
-%else:
-bool validify()
+  abstract boolean validify();
+% else:
+  boolean validify()
   {
     if(iteration == BaseAI.iteration) return true;
-    for(int i = 0; i < BaseAI.${lowercase(model.plural)}.Length; i++)
+    for(int i = 0; i < BaseAI.${lowercase(model.plural)}.length; i++)
     {
       if(BaseAI.${lowercase(model.plural)}[i].ID == ID)
       {
@@ -60,11 +49,7 @@ bool validify()
     
 % for func in model.functions:
   ///${func.doc}
-%   if model.parent and func in model.parent.functions:
-  public new int ${func.name}(\
-%   else:
-  public int ${func.name}(\
-%   endif
+  int ${func.name}(\
 %   for arg in func.arguments:
 %     if func.arguments[0] is not arg:
 , \
@@ -83,7 +68,7 @@ ${conversions[arg.type]} ${arg.name}\
     ${arg.name}.validify();
 %     endif
 %   endfor
-    return Client.${lowercase(model.name)}${capitalize(func.name)}(ptr\
+    return Client.INSTANCE.${lowercase(model.name)}${capitalize(func.name)}(ptr\
 %   for arg in func.arguments:
 , \
 %     if isinstance(arg.type, Model):
@@ -100,14 +85,10 @@ ${arg.name}\
     
 % for datum in model.data:
   ///${datum.doc}
-  public \
-%   if model.parent and datum in model.parent.data:
-new \
-%   endif
-${conversions[datum.type]} get${capitalize(datum.name)}()
+  public ${conversions[datum.type]} get${capitalize(datum.name)}()
   {
     validify();
-    return Client.${lowercase(model.name)}Get${capitalize(datum.name)}(ptr);
+    return Client.INSTANCE.${lowercase(model.name)}Get${capitalize(datum.name)}(ptr);
   }
 % endfor
 
@@ -132,7 +113,7 @@ ${conversions[arg.type]} ${arg.name}\
 )
   {
     validify();
-    return Client.${model.name.lower()}${capitalize(prop.name)}(ptr\
+    return Client.INSTANCE.${model.name.lower()}${capitalize(prop.name)}(ptr\
 %   for arg in prop.arguments:
 %     if isinstance(arg.type, Model):
 , (_${arg.type.name}*) ${arg.name}.ptr\
