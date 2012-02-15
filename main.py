@@ -72,3 +72,5 @@ if __name__ == '__main__':
   w.write('templates/cs', 'output/cs', objects)
   w = writers.VisualizerWriter()
   w.write('templates/visualizer', 'output/visualizer', objects)
+  w = writers.VisClientWriter()
+  w.write('templates/visclient', 'output/visclient', objects)

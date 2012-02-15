@@ -116,3 +116,7 @@ class VisualizerWriter(ModuleWriter):
   writers = { 'files' : MakoWriter(),
               'static' : StaticWriter()
               }
+
+class VisClientWriter(CWriter):
+  pass
+
