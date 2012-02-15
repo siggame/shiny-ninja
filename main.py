@@ -64,3 +64,5 @@ if __name__ == '__main__':
   w.write('templates/python', 'output/python', objects)
   w = writers.ServerWriter()
   w.write('templates/server', 'output/server', objects)
+  w = writers.CWriter()
+  w.write('templates/c', 'output/c', objects)

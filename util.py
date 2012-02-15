@@ -1,6 +1,4 @@
 # -*- coding: iso-8859-1 -*-
-import string
-
 def members(x):
   for i in dir(x):
     yield getattr(x,i)
@@ -20,7 +18,7 @@ def dashify(str):
     return str
   result = str[0].lower()
   for i in str[1:]:
-    if i in string.uppercase:
+    if i == i.upper():
       result += '-'
     result += i.lower()
   return result
