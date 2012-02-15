@@ -1,1 +1,1 @@
-writer = makeWriter(language='cs')
+writer = makeWriter(language='csharp')

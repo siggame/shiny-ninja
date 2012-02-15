@@ -60,5 +60,4 @@ if __name__ == '__main__':
     if os.path.exists(writerPath):
         m = runpy.run_path(writerPath, g)
         w = m['writer']()
-        print(modulePath, outPath, objects)
         w.write(modulePath, outPath, objects)
