@@ -1,6 +1,4 @@
 # -*- coding: iso-8859-1 -*-
-from util import *
-
 import structures
 
 c = {int:'int', str:'char*', float:'float', bool:'int', chr:'char'}

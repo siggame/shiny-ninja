@@ -6,12 +6,6 @@ import runpy
 import os.path
 import conversions
 
-def import_file(path):
-  try:
-    return runpy.run_path(path)
-  except:
-    raise ImportError
-
 def insertModel(list, model):
   if model.parent and model.parent not in list:
     insertModel(list, model.parent)
@@ -49,7 +43,7 @@ if __name__ == '__main__':
 
   args = parser.parse_args()
 
-  data = import_file(args.dataPyPath)
+  data = runpy.run_path(args.dataPyPath)
 
   objects = parseData(data)
   conversions.addModels(data)
