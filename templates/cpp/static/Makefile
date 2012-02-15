@@ -2,8 +2,8 @@ sources = $(wildcard *.cpp)
 headers = $(wildcard *.h)
 objects = $(sources:%.cpp=%.o)
 deps = $(sources:%.cpp=%.d)
-CFLAGS += -g -I../c
-CXXFLAGS += -g -I../c
+CFLAGS += -g -I../library
+CXXFLAGS += -g -I../library
 
 all: client
 
@@ -15,13 +15,13 @@ submit: client
 clean:
 	rm -f $(objects) client
 
-client: $(objects) ../c/client.a ../c/sexp/sexp.a
+client: $(objects) ../library/client.a ../library/sexp/sexp.a
 	$(CXX) $(LDFLAGS) $(LOADLIBES) $(LDLIBS) $^ -g -o client
 
-../c/client.a:
+../library/client.a:
 	$(MAKE) -C $(dir $@) $(notdir $@)
 
-../c/sexp/sexp.a:
+../library/sexp/sexp.a:
 	$(MAKE) -C $(dir $@) $(notdir $@)
 
 -include $(deps)
