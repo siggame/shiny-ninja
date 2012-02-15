@@ -70,3 +70,5 @@ if __name__ == '__main__':
   w.write('templates/java', 'output/java', objects)
   w = writers.CSWriter()
   w.write('templates/cs', 'output/cs', objects)
+  w = writers.VisualizerWriter()
+  w.write('templates/visualizer', 'output/visualizer', objects)

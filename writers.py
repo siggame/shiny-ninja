@@ -109,3 +109,10 @@ class CSWriter(ModuleWriter):
               'model' : IterWriter(MakoWriter(), 'model', 'models'),
               'static' : StaticWriter()
               }
+
+
+class VisualizerWriter(ModuleWriter):
+  module = 'c'
+  writers = { 'files' : MakoWriter(),
+              'static' : StaticWriter()
+              }
