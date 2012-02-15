@@ -62,3 +62,5 @@ if __name__ == '__main__':
   import writers
   w = writers.PythonWriter()
   w.write('templates/python', 'output/python', objects)
+  w = writers.ServerWriter()
+  w.write('templates/server', 'output/server', objects)

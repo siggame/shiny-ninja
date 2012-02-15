@@ -6,24 +6,6 @@ import conversions
 import util
 import os.path, os
 
-class Writer(object):
-  module = None
-
-  def getLocalData(self):
-    data = {}
-    data['conversions'] = getattr(conversions, self.module)
-    data['capitalize'] = util.capitalize
-    data['lowercase'] = util.lowercase
-    data['Model'] = structures.Model
-    return data
-
-  def write(self, source, dest, objects):
-    data = self.getLocalData()
-    data.update(objects)
-
-    w = MakoWriter()
-    w.write(source, dest, data)
-
 class MakoWriter(object):
   def write(self, source, dest, data):
     for dir, subdirs, files in os.walk(source):
@@ -46,6 +28,30 @@ class MakoWriter(object):
       print(exceptions.text_error_template().render())
 
 
+class Writer(object):
+  module = None
+  writers = {}
+
+  def getLocalData(self):
+    data = {}
+    data['conversions'] = getattr(conversions, self.module)
+    data['capitalize'] = util.capitalize
+    data['lowercase'] = util.lowercase
+    data['Model'] = structures.Model
+    return data
+
+  def write(self, source, dest, objects):
+    data = self.getLocalData()
+    data.update(objects)
+
+    for dir, writer in self.writers.items():
+      s = os.path.join(source, dir)
+      writer.write(s, dest, data)
+
 class PythonWriter(Writer):
   module = 'python'
+  writers = { '.' : MakoWriter() }
 
+class ServerWriter(Writer):
+  module = 'server'
+  writers = { '.' : MakoWriter() }
