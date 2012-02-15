@@ -1,8 +1,4 @@
 # -*- coding: iso-8859-1 -*-
-def members(x):
-  for i in dir(x):
-    yield getattr(x,i)
-
 def capitalize(str):
   if not str:
     return str
