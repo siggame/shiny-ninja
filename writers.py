@@ -82,6 +82,5 @@ class ModuleWriter(object):
       if os.path.isdir(s):
         writer.write(s, dest, data)
 
-
 def makeWriter(**kwargs):
   return type('Writer', (ModuleWriter,), kwargs)
