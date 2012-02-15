@@ -60,7 +60,7 @@ if __name__ == '__main__':
   w.write('templates/cpp', os.path.join(output, 'cpp'), objects)
   w = writers.JavaWriter()
   w.write('templates/java', os.path.join(output, 'java'), objects)
-  w = writers.CSWriter()
+  w = writers.CSharpWriter()
   w.write('templates/csharp', os.path.join(output, 'csharp'), objects)
   w = writers.VisualizerWriter()
   w.write('templates/visualizer', os.path.join(output, 'visualizer'), objects)

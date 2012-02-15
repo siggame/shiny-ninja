@@ -96,8 +96,8 @@ class CppWriter(ModuleWriter):
 
 class JavaWriter(ModuleWriter):
   module = 'java'
-class CSWriter(ModuleWriter):
-  module = 'cs'
+class CSharpWriter(ModuleWriter):
+  module = 'csharp'
 
 
 class VisualizerWriter(ModuleWriter):
