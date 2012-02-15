@@ -59,7 +59,10 @@ class IterWriter(object):
 
 class ModuleWriter(object):
   module = None
-  writers = {}
+  writers = { 'dynamic' : MakoWriter(),
+              'model' : IterWriter(MakoWriter(), 'model', 'models'),
+              'static' : StaticWriter()
+              }
 
   def getLocalData(self):
     data = {}
@@ -76,24 +79,17 @@ class ModuleWriter(object):
 
     for dir, writer in self.writers.items():
       s = os.path.join(source, dir)
-      writer.write(s, dest, data)
+      if os.path.isdir(s):
+        writer.write(s, dest, data)
 
 class PythonWriter(ModuleWriter):
   module = 'python'
-  writers = { 'dynamic' : MakoWriter(),
-              'static' : StaticWriter()
-              }
 
 class ServerWriter(ModuleWriter):
   module = 'server'
-  writers = { '.' : MakoWriter() }
 
 class CWriter(ModuleWriter):
   module = 'c'
-  writers = { 'dynamic' : MakoWriter(),
-              'model' : IterWriter(MakoWriter(), 'model', 'models'),
-              'static' : StaticWriter()
-              }
   def getLocalData(self):
     data = ModuleWriter.getLocalData(self)
     data['cppconversions'] = conversions.cpp
@@ -101,23 +97,12 @@ class CWriter(ModuleWriter):
 
 class JavaWriter(ModuleWriter):
   module = 'java'
-  writers = { 'dynamic' : MakoWriter(),
-              'model' : IterWriter(MakoWriter(), 'model', 'models'),
-              'static' : StaticWriter()
-              }
 class CSWriter(ModuleWriter):
   module = 'cs'
-  writers = { 'dynamic' : MakoWriter(),
-              'model' : IterWriter(MakoWriter(), 'model', 'models'),
-              'static' : StaticWriter()
-              }
 
 
 class VisualizerWriter(ModuleWriter):
   module = 'c'
-  writers = { 'dynamic' : MakoWriter(),
-              'static' : StaticWriter()
-              }
 
 class VisClientWriter(CWriter):
   pass
