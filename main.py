@@ -3,6 +3,7 @@
 import structures
 import argparse
 from util import *
+import os.path
 
 def import_file(full_path_to_module):
   try:
@@ -58,19 +59,20 @@ if __name__ == '__main__':
   import_file(args.dataPyPath);
 
   objects = parseData()
+  output = args.outDir
 
   import writers
   w = writers.PythonWriter()
-  w.write('templates/python', 'output/python', objects)
+  w.write('templates/python', os.path.join(output, 'python'), objects)
   w = writers.ServerWriter()
-  w.write('templates/server', 'output/server', objects)
+  w.write('templates/server', os.path.join(output, 'server'), objects)
   w = writers.CWriter()
-  w.write('templates/c', 'output/c', objects)
+  w.write('templates/c', os.path.join(output, 'c'), objects)
   w = writers.JavaWriter()
-  w.write('templates/java', 'output/java', objects)
+  w.write('templates/java', os.path.join(output, 'java'), objects)
   w = writers.CSWriter()
-  w.write('templates/cs', 'output/cs', objects)
+  w.write('templates/cs', os.path.join(output, 'cs'), objects)
   w = writers.VisualizerWriter()
-  w.write('templates/visualizer', 'output/visualizer', objects)
+  w.write('templates/visualizer', os.path.join(output, 'visualizer'), objects)
   w = writers.VisClientWriter()
-  w.write('templates/visclient', 'output/visclient', objects)
+  w.write('templates/visclient', os.path.join(output, 'visclient'), objects)
