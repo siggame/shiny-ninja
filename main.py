@@ -40,6 +40,7 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Run The Codegen To Automatically Generate Some Codez')
   parser.add_argument('-d', '--data', dest='dataPyPath', default='./data.py', help='The Path To data.py')
   parser.add_argument('-o', '--output', dest='outDir', default='./output', help='The output of the codegen.')
+  parser.add_argument('-t', '--tempalte', dest='templatePath', default='./templates', help='The location of the templates')
 
   args = parser.parse_args()
 
@@ -48,21 +49,16 @@ if __name__ == '__main__':
   objects = parseData(data)
   conversions.addModels(data)
   output = args.outDir
+  templates = args.templatePath
 
   import writers
-  w = writers.PythonWriter()
-  w.write('templates/python', os.path.join(output, 'python'), objects)
-  w = writers.ServerWriter()
-  w.write('templates/server', os.path.join(output, 'server'), objects)
-  w = writers.CWriter()
-  w.write('templates/library', os.path.join(output, 'library'), objects)
-  w = writers.CppWriter()
-  w.write('templates/cpp', os.path.join(output, 'cpp'), objects)
-  w = writers.JavaWriter()
-  w.write('templates/java', os.path.join(output, 'java'), objects)
-  w = writers.CSWriter()
-  w.write('templates/csharp', os.path.join(output, 'csharp'), objects)
-  w = writers.VisualizerWriter()
-  w.write('templates/visualizer', os.path.join(output, 'visualizer'), objects)
-  w = writers.VisClientWriter()
-  w.write('templates/visclient', os.path.join(output, 'visclient'), objects)
+  g = writers.__dict__
+  for module in os.listdir(templates):
+    modulePath = os.path.join(templates, module)
+    outPath = os.path.join(output, module)
+    writerPath = os.path.join(modulePath, 'writer.py')
+    if os.path.exists(writerPath):
+        m = runpy.run_path(writerPath, g)
+        w = m['writer']()
+        print(modulePath, outPath, objects)
+        w.write(modulePath, outPath, objects)

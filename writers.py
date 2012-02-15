@@ -58,7 +58,7 @@ class IterWriter(object):
 
 
 class ModuleWriter(object):
-  module = None
+  language = None
   writers = { 'dynamic' : MakoWriter(),
               'model' : IterWriter(MakoWriter(), 'model', 'models'),
               'static' : StaticWriter()
@@ -66,7 +66,7 @@ class ModuleWriter(object):
 
   def getLocalData(self):
     data = {}
-    data['conversions'] = getattr(conversions, self.module)
+    data['conversions'] = getattr(conversions, self.language)
     data['capitalize'] = util.capitalize
     data['lowercase'] = util.lowercase
     data['Model'] = structures.Model
@@ -82,27 +82,6 @@ class ModuleWriter(object):
       if os.path.isdir(s):
         writer.write(s, dest, data)
 
-class PythonWriter(ModuleWriter):
-  module = 'python'
 
-class ServerWriter(ModuleWriter):
-  module = 'server'
-
-class CWriter(ModuleWriter):
-  module = 'c'
-
-class CppWriter(ModuleWriter):
-  module = 'c'
-
-class JavaWriter(ModuleWriter):
-  module = 'java'
-class CSWriter(ModuleWriter):
-  module = 'cs'
-
-
-class VisualizerWriter(ModuleWriter):
-  module = 'c'
-
-class VisClientWriter(CWriter):
-  pass
-
+def makeWriter(**kwargs):
+  return type('Writer', (ModuleWriter,), kwargs)
