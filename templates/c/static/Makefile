@@ -28,7 +28,7 @@ clean:
 
 libclient.so: libclient_network.o libclient_game.o libclient_getters.o libclient_util.o sexp/libclient_sexp.a
 	$(CXX) -shared -Wl,-soname,libclient.so $(LDFLAGS) $(LOADLIBES) $(LDLIBS) $^ -o libclient.so
-libclient.a: libclient_network.o libclient_game.o libclient_getters.o libclient_util.o sexp/libclient_sexp.a
+client.a: $(objects)
 	ar cr $@ $^
 	ranlib $@
 

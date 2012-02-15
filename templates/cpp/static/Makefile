@@ -15,10 +15,13 @@ submit: client
 clean:
 	rm -f $(objects) client
 
-client: $(objects) ../c/libclient.a ../c/sexp/libclient_sexp.a
+client: $(objects) ../c/client.a ../c/sexp/sexp.a
 	$(CXX) $(LDFLAGS) $(LOADLIBES) $(LDLIBS) $^ -g -o client
 
-../c/libclient.a:
+../c/client.a:
+	$(MAKE) -C $(dir $@) $(notdir $@)
+
+../c/sexp/sexp.a:
 	$(MAKE) -C $(dir $@) $(notdir $@)
 
 -include $(deps)
