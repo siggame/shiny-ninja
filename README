@@ -1,8 +1,10 @@
-This is the codegen, a scratch built meta-programing tool designed to automatically generate much of the code for the megaminer AI programing competition. In practice it does less than everything, but this tool is still invaluable in speeding up development time so we can focus more on testing and less on writing the backend. 
+This is the codegen, a scratch-built meta-programing tool designed to automatically generate much of the code for the megaminer AI programing competition. In practice it does less than everything, but this tool is still invaluable in speeding up development time so we can focus more on testing and less on writing the backend.
 
-To run the codegen, run 'python main.py'. This calls and runs everything else, and ideally should exit without error. 
+The codegen takes a 'data.py' file that specifies details of the game: game objects, actions, variables; and generates shells for most components of the game, including the server, C++, Java, Python, and C# clients, and the visualizer.
 
-main.py does some prepatory work and then calls each of the individual code writers for each of the other components. 
-Each of the code writing modules takes in files in the templates folder, which list all the elements required to make up the client, and the model.txt file, which lists all the conversions required in the template files to match the syntax required by that particular language. 
+To run the codegen, run 'python main.py'. You can use -d to specify the data file, otherwise it will assume './data.py'. You can use -o to specify an output directory; it will assume './output'.
 
-Each of the code writing modules takes this input and uses it to create the code required to make a working client, as well as a makefile that, when run, will compile the client for that language. It is your responsiblity, not codegen's, to run the makefile.
+main.py does some prepatory work and then calls each of the individual code writers for each of the components.
+Each writer will walk through its template directory to find the templates used to create the files it produces, and puts them into the output directory after processing.
+
+It is your responsiblity, not codegen's, to run the makefile.
