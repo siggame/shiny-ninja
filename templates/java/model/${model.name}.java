@@ -44,9 +44,9 @@ class ${model.name}\
     throw new ExistentialError();
   }
 % endif
-    
+
     //commands
-    
+
 % for func in model.functions:
   ///${func.doc}
   int ${func.name}(\
@@ -80,9 +80,9 @@ ${arg.name}\
 );
   }
 % endfor
-    
+
     //getters
-    
+
 % for datum in model.data:
   ///${datum.doc}
   public ${conversions[datum.type]} get${capitalize(datum.name)}()
@@ -94,10 +94,10 @@ ${arg.name}\
 
 % for prop in model.properties:
    ///${prop.doc}
-%     if isinstance(arg.type, Model):
+%     if isinstance(prop.type, Model):
   int \
 %     else:
-  ${conversions[arg.type]} \
+  ${conversions[prop.type]} \
 %     endif
 get${capitalize(prop.name)}(\
 %   for arg in prop.arguments:

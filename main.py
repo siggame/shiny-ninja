@@ -5,6 +5,7 @@ import argparse
 import runpy
 import os.path
 import conversions
+import copy
 
 def insertModel(list, model):
   if model.parent and model.parent not in list:
@@ -60,4 +61,4 @@ if __name__ == '__main__':
     if os.path.exists(writerPath):
         m = runpy.run_path(writerPath, g)
         w = m['writer']()
-        w.write(modulePath, outPath, objects)
+        w.write(modulePath, outPath, copy.copy(objects))

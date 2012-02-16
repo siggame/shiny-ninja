@@ -18,11 +18,11 @@ class ${model.name}\
   protected int ID;
   protected int iteration;
 %endif
-  
+
   public ${model.name}()
   {
   }
-  
+
   public ${model.name}(IntPtr p)
   {
     ptr = p;
@@ -55,9 +55,9 @@ bool validify()
     throw new ExistentialError();
   }
 % endif
-    
+
     //commands
-    
+
 % for func in model.functions:
   ///${func.doc}
 %   if model.parent and func in model.parent.functions:
@@ -72,7 +72,7 @@ bool validify()
 %     if isinstance(arg.type, Model):
 ${arg.type.name} ${arg.name}\
 %     else:
-${conversions[arg.type]} ${arg.name}\
+${types[arg.type]} ${arg.name}\
 %     endif
 %   endfor
 )
@@ -95,28 +95,33 @@ ${arg.name}\
 );
   }
 % endfor
-    
+
     //getters
-    
+
 % for datum in model.data:
   ///${datum.doc}
   public \
 %   if model.parent and datum in model.parent.data:
 new \
 %   endif
-${conversions[datum.type]} get${capitalize(datum.name)}()
+${types[datum.type]} get${capitalize(datum.name)}()
   {
     validify();
-    return Client.${lowercase(model.name)}Get${capitalize(datum.name)}(ptr);
+    ${fromClient[datum.type]} value = Client.${lowercase(model.name)}Get${capitalize(datum.name)}(ptr);
+%   if datum.type is str:
+    return Marshal.PtrToStringAuto(value);
+%   else:
+    return value;
+%   endif
   }
 % endfor
 
 % for prop in model.properties:
    ///${prop.doc}
-%     if isinstance(arg.type, Model):
+%     if isinstance(prop.type, Model):
   int \
 %     else:
-  ${conversions[arg.type]} \
+  ${types[prop.type]} \
 %     endif
 get${capitalize(prop.name)}(\
 %   for arg in prop.arguments:
@@ -126,13 +131,13 @@ get${capitalize(prop.name)}(\
 %     if isinstance(arg.type, Model):
 ${arg.type.name}& ${arg.name}\
 %     else:
-${conversions[arg.type]} ${arg.name}\
+${types[arg.type]} ${arg.name}\
 %     endif
 %   endfor
 )
   {
     validify();
-    return Client.${model.name.lower()}${capitalize(prop.name)}(ptr\
+    ${fromClient[prop.type]} value = Client.${model.name.lower()}${capitalize(prop.name)}(ptr\
 %   for arg in prop.arguments:
 %     if isinstance(arg.type, Model):
 , (_${arg.type.name}*) ${arg.name}.ptr\
@@ -141,6 +146,11 @@ ${conversions[arg.type]} ${arg.name}\
 %     endif
 %   endfor
 );
+%   if prop.type is str:
+    return Marshal.PtrToStringAuto(value);
+%   else:
+    return value;
+%   endif
   }
 
 %   endfor
