@@ -66,7 +66,7 @@ class ModuleWriter(object):
 
   def getLocalData(self):
     data = {}
-    data['conversions'] = getattr(conversions, self.language)
+    data.update(getattr(conversions, self.language))
     data['capitalize'] = util.capitalize
     data['lowercase'] = util.lowercase
     data['Model'] = structures.Model
