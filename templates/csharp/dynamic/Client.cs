@@ -30,7 +30,7 @@ public class Client {
   public static extern int ${lowercase(model.name)}${capitalize(func.name)}(IntPtr self\
 %     for arg in func.arguments:
 , \
-${conversions[arg.type]} ${arg.name}\
+${toClient[arg.type]} ${arg.name}\
 %     endfor
 );
 %   endfor
@@ -39,7 +39,7 @@ ${conversions[arg.type]} ${arg.name}\
     //accessors
 % for datum in globals:
   [DllImport("client")]
-  public static extern ${conversions[datum.type]} get${capitalize(datum.name)}(IntPtr connection);
+  public static extern ${fromClient[datum.type]} get${capitalize(datum.name)}(IntPtr connection);
 % endfor
 
 % for model in models:
@@ -56,7 +56,7 @@ ${conversions[arg.type]} ${arg.name}\
 % for model in models:
 %   for datum in model.data:
   [DllImport("client")]
-  public static extern ${conversions[datum.type]} ${lowercase(model.name)}Get${capitalize(datum.name)}(IntPtr ptr);
+  public static extern ${fromClient[datum.type]} ${lowercase(model.name)}Get${capitalize(datum.name)}(IntPtr ptr);
 %   endfor
 
 % endfor
@@ -65,10 +65,10 @@ ${conversions[arg.type]} ${arg.name}\
 % for  model in models:
 %   for prop in model.properties:
   [DllImport("client")]
-  public static extern ${conversions[prop.result]} ${lowercase(model.name)}${capitalize(prop.name)}(IntPtr self\
+  public static extern ${fromClient[prop.result]} ${lowercase(model.name)}${capitalize(prop.name)}(IntPtr self\
 %     for arg in prop.arguments:
 , \
-${conversions[arg.type]} ${arg.name}\
+${toClient[arg.type]} ${arg.name}\
 %     endfor
 );
 %   endfor

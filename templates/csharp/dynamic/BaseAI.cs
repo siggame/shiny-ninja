@@ -21,7 +21,7 @@ public abstract class BaseAI
   {
     connection = c;
   }
-    
+
   ///
   ///Make this your username, which should be provided.
   public abstract String username();
@@ -68,9 +68,14 @@ public abstract class BaseAI
 
 % for datum in globals:
   ///${datum.doc}
-  public ${conversions[datum.type]} ${datum.name}()
+  public ${types[datum.type]} ${datum.name}()
   {
-    return Client.get${capitalize(datum.name)}(connection);
+    ${types[datum.type]} value = Client.get${capitalize(datum.name)}(connection);
+%   if datum.type is str:
+    return Marshal.PtrToStringAuto(value);
+%   else:
+    return value;
+%   endif
   }
 % endfor
 }
