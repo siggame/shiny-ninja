@@ -113,7 +113,7 @@ ${conversions[arg.type]} ${arg.name}\
 )
   {
     validify();
-    return Client.INSTANCE.${model.name.lower()}${capitalize(prop.name)}(ptr\
+    return Client.INSTANCE.${lowercase(model.name)}${capitalize(prop.name)}(ptr\
 %   for arg in prop.arguments:
 %     if isinstance(arg.type, Model):
 , (_${arg.type.name}*) ${arg.name}.ptr\

@@ -64,7 +64,7 @@ extern "C"
 % for model in models:
 %   for func in model.functions:
   ///${func.doc}
-  DLLEXPORT int ${model.name.lower()}${capitalize(func.name)}(${conversions[model]} object\
+  DLLEXPORT int ${lowercase(model.name)}${capitalize(func.name)}(${conversions[model]} object\
 %     for arg in func.arguments:
 , \
 ${conversions[arg.type]} ${arg.name}\
@@ -78,7 +78,7 @@ ${conversions[arg.type]} ${arg.name}\
 % for model in models:
 %   for prop in model.properties:
   ///${prop.doc}
-  DLLEXPORT ${conversions[prop.result]} ${model.name.lower()}${capitalize(prop.name)}(${conversions[model]} object\
+  DLLEXPORT ${conversions[prop.result]} ${lowercase(model.name)}${capitalize(prop.name)}(${conversions[model]} object\
 %     for arg in prop.arguments:
 , \
 ${conversions[arg.type]} ${arg.name}\

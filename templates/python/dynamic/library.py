@@ -40,8 +40,8 @@ library.networkLoop.argtypes = [c_void_p]
 #Functions
 %for model in models:
 %  for func in model.functions:
-library.${model.name.lower()}${capitalize(func.name)}.restype = c_int
-library.${model.name.lower()}${capitalize(func.name)}.argtypes = [${conversions[model]}\
+library.${lowercase(model.name)}${capitalize(func.name)}.restype = c_int
+library.${lowercase(model.name)}${capitalize(func.name)}.argtypes = [${conversions[model]}\
 %    for arg in func.arguments:
 , \
 ${conversions[arg.type]}\
@@ -86,8 +86,8 @@ library.${lowercase(model.name)}Get${capitalize(datum.name)}.argtypes = [c_void_
 #Properties
 %for model in models:
 %  for prop in model.properties:
-library.${model.name.lower()}${capitalize(prop.name)}.restype = c_int
-library.${model.name.lower()}${capitalize(prop.name)}.argtypes = [${conversions[model]}\
+library.${lowercase(model.name)}${capitalize(prop.name)}.restype = c_int
+library.${lowercase(model.name)}${capitalize(prop.name)}.argtypes = [${conversions[model]}\
 %    for arg in prop.arguments:
 , \
 ${conversions[arg.type]}\

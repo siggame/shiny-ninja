@@ -37,7 +37,7 @@ ${conversions[arg.type]} ${arg.name}\
 %     endfor
 )
 {
-  return ${model.name.lower()}${capitalize(func.name)}( (_${model.name}*)ptr\
+  return ${lowercase(model.name)}${capitalize(func.name)}( (_${model.name}*)ptr\
 %     for arg in func.arguments:
 %       if isinstance(arg.type, Model):
 , (_${arg.type.name}*) ${arg.name}.ptr\
@@ -64,7 +64,7 @@ ${conversions[arg.type]} ${arg.name}\
 %     endfor
 )
 {
-  return ${model.name.lower()}${capitalize(prop.name)}( (_${model.name}*)ptr\
+  return ${lowercase(model.name)}${capitalize(prop.name)}( (_${model.name}*)ptr\
 %     for arg in prop.arguments:
 %       if isinstance(arg.type, Model):
 , (_${arg.type.name}*) ${arg.name}.ptr\

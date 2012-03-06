@@ -137,7 +137,7 @@ ${types[arg.type]} ${arg.name}\
 )
   {
     validify();
-    ${fromClient[prop.type]} value = Client.${model.name.lower()}${capitalize(prop.name)}(ptr\
+    ${fromClient[prop.type]} value = Client.${lowercase(model.name)}${capitalize(prop.name)}(ptr\
 %   for arg in prop.arguments:
 %     if isinstance(arg.type, Model):
 , (_${arg.type.name}*) ${arg.name}.ptr\
