@@ -26,6 +26,7 @@ class ${model.name}(GameObject):
     self._id = library.${lowercase(model.name)}GetId(ptr)
 
 %   if model.type == 'Model':
+  #\cond
   def validify(self):
     from BaseAI import BaseAI
     #if this class is pointing to an object from before the current turn it's probably
@@ -38,6 +39,7 @@ class ${model.name}(GameObject):
         self._iteration = BaseAI.iteration
         return True
     raise ExistentialError()
+  #\endcond
 %   endif
 %  for func in model.functions + model.properties:
   #\
@@ -67,14 +69,14 @@ class ${model.name}(GameObject):
 
 %  endfor
 %  for datum in model.data:
-  #\
-#${datum.doc}
-  ${datum.name} = ${datum.type.__name__}
-
-  @property
-  def ${datum.name}(self):
+  #\cond
+  def get${capitalize(datum.name)}(self):
     self.validify()
     return library.${lowercase(model.name)}Get${capitalize(datum.name)}(self._ptr)
+  #\endcond
+  #\
+#${datum.doc}
+  ${datum.name} = property(get${capitalize(datum.name)})
 
 %  endfor
 

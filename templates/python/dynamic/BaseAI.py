@@ -9,16 +9,18 @@ class BaseAI:
   AIs should extend this class to get a lot of builer-plate code out of the way
   The provided AI class does just that.
   """
+  #\cond
   initialized = False
   iteration = 0
   runGenerator = None
   connection = None
+  #\endcond
 % for model in models:
 %   if model.type == 'Model':
   ${lowercase(model.plural)} = []
 %   endif
 % endfor
-
+  #\cond
   def startTurn(self):
 % for model in models:
 %   if model.type == 'Model':
@@ -46,7 +48,7 @@ class BaseAI:
       self.runGenerator = r
       return r.next()
     return r
-  
+  #\endcond
 % for datum in globals:
   ##${datum.doc}
   @property
