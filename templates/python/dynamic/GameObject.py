@@ -69,6 +69,8 @@ class ${model.name}(GameObject):
 %  for datum in model.data:
   #\
 #${datum.doc}
+  ${datum.name} = ${datum.type.__name__}
+
   @property
   def ${datum.name}(self):
     self.validify()
