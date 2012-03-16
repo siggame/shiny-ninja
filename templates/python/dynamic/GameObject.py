@@ -7,8 +7,8 @@ from ExistentialError import ExistentialError
 class GameObject(object):
   def __init__(self, ptr):
     from BaseAI import BaseAI
-    self.ptr = ptr
-    self.iteration = BaseAI.iteration
+    self._ptr = ptr
+    self._iteration = BaseAI.iteration
 
 % for model in models:
 
@@ -21,22 +21,21 @@ class ${model.name}(GameObject):
 %   endif
   def __init__(self, ptr):
     from BaseAI import BaseAI
-    self.ptr = ptr
-    self.iteration = BaseAI.iteration
-    
-    self.id = library.${lowercase(model.name)}GetId(ptr)
+    self._ptr = ptr
+    self._iteration = BaseAI.iteration
+    self._id = library.${lowercase(model.name)}GetId(ptr)
 
 %   if model.type == 'Model':
   def validify(self):
     from BaseAI import BaseAI
     #if this class is pointing to an object from before the current turn it's probably
     #somewhere else in memory now
-    if self.iteration == BaseAI.iteration:
+    if self._iteration == BaseAI.iteration:
       return True
     for i in BaseAI.${lowercase(model.plural)}:
-      if i.id == self.id:
-        self.ptr = i.ptr
-        self.iteration = BaseAI.iteration
+      if i._id == self._id:
+        self._ptr = i._ptr
+        self._iteration = BaseAI.iteration
         return True
     raise ExistentialError()
 %   endif
@@ -56,12 +55,12 @@ class ${model.name}(GameObject):
     ${arg.name}.validify()
 %      endif
 %    endfor
-    return library.${lowercase(model.name)}${capitalize(func.name)}(self.ptr\
+    return library.${lowercase(model.name)}${capitalize(func.name)}(self._ptr\
 %    for arg in func.arguments:
 %      if not isinstance(arg.type, Model):
 , ${arg.name}\
 %      else:
-, ${arg.name}.ptr\
+, ${arg.name}._ptr\
 %      endif
 %    endfor
 )
@@ -70,9 +69,10 @@ class ${model.name}(GameObject):
 %  for datum in model.data:
   #\
 #${datum.doc}
-  def get${capitalize(datum.name)}(self):
+  @property
+  def ${datum.name}(self):
     self.validify()
-    return library.${lowercase(model.name)}Get${capitalize(datum.name)}(self.ptr)
+    return library.${lowercase(model.name)}Get${capitalize(datum.name)}(self._ptr)
 
 %  endfor
 

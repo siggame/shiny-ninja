@@ -49,6 +49,7 @@ class BaseAI:
   
 % for datum in globals:
   ##${datum.doc}
+  @property
   def ${datum.name}(self):
     return library.get${capitalize(datum.name)}(self.connection)
 
