@@ -8,9 +8,16 @@ class BaseAI
   @initialized = false
   @@iteration = 0
   @connection = nil
+
 % for model in models:
 %   if model.type == 'Model':
   @@${lowercase(model.plural)} = []
+  def BaseAI.${lowercase(model.plural)}
+    @@${lowercase(model.plural)}
+  end
+  def ${lowercase(model.plural)}
+    @@${lowercase(model.plural)}
+  end
 %   endif
 % endfor
 
