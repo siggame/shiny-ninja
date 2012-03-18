@@ -19,6 +19,9 @@ except OSError:
 library.createConnection.restype = c_void_p
 library.createConnection.argtypes = []
 
+library.serverConnect.restype = c_int
+library.serverConnect.argtypes = [c_void_p, c_char_p, c_char_p]
+
 library.serverLogin.restype = c_int
 library.serverLogin.argtypes = [c_void_p, c_char_p, c_char_p]
 
@@ -52,7 +55,7 @@ ${conversions[arg.type]}\
 %endfor
 # accessors
 
-#Globals 
+#Globals
 %for datum in globals:
 library.get${capitalize(datum.name)}.restype = ${conversions[datum.type]}
 library.get${capitalize(datum.name)}.argtypes = [c_void_p]
