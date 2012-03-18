@@ -1,3 +1,11 @@
 #!/bin/bash
-
-python main.py $1 $2
+progs='pypy-c1.8 pypy-c1.7 pypy python2.7 python2 python'
+for i in $progs ; do
+  if [ ! -z "$(command -v $i)" ];then prog=$i; break; fi
+done
+if [ -z $prog ] ; then
+  echo 'No Python found!' >2;
+  exit 1
+else
+  $prog main.py $@
+fi
