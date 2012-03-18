@@ -7,6 +7,7 @@ module Library
   ffi_lib 'client'
   #commands
   attach_function 'createConnection', [], :pointer
+  attach_function 'serverConnect', [:pointer, :string, :string], :int
   attach_function 'serverLogin', [:pointer, :string, :string], :int
   attach_function 'createGame', [:pointer], :int
   attach_function 'joinGame', [:pointer, :int, :string], :int
@@ -48,9 +49,9 @@ ${conversions[arg.type]}\
 %for model in models:
 %  for datum in model.data:
 %    if not isinstance(datum.type, Model):
-  attach_function 'library.${lowercase(model.name)}Get${capitalize(datum.name)}' [:pointer], ${conversions[datum.type]}
+  attach_function '${lowercase(model.name)}Get${capitalize(datum.name)}', [:pointer], ${conversions[datum.type]}
 %    else:
-  attach_function 'library.${lowercase(model.name)}Get${capitalize(datum.name)}' [:pointer], :int
+  attach_function '${lowercase(model.name)}Get${capitalize(datum.name)}', [:pointer], :int
 %    endif
 
 %  endfor
@@ -60,7 +61,7 @@ ${conversions[arg.type]}\
 #Properties
 %for model in models:
 %  for prop in model.properties:
-  attach_function 'library.${lowercase(model.name)}${capitalize(prop.name)}', [${conversions[model]}\
+  attach_function '${lowercase(model.name)}${capitalize(prop.name)}', [${conversions[model]}\
 %    for arg in prop.arguments:
 , \
 ${conversions[arg.type]}\

@@ -1,2 +1,2 @@
-class ExistentialError(LookupError):
-  pass
+class ExistentialError < RuntimeError
+end

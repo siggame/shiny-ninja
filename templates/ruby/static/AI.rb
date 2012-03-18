@@ -1,29 +1,27 @@
-#-*-python-*-
-from BaseAI import BaseAI
-from GameObject import *
+require './BaseAI.rb'
+require './GameObject.rb'
 
-class AI(BaseAI):
+class AI <BaseAI
   """The class implementing gameplay logic."""
-  @staticmethod
-  def username():
-    return "Shell AI"
+  def username
+    "Shell AI"
+  end
 
-  @staticmethod
-  def password():
+  def password
     return "password"
+  end
 
   ##This function is called once, before your first turn
-  def init(self):
-    pass
+  def init
+  end
 
   ##This function is called once, after your last turn
-  def end(self):
-    pass
+  def end
+  end
 
   ##This function is called each time it is your turn
   ##Return true to end your turn, return false to ask the server for updated information
-  def run(self):
-      return 1
-
-  def __init__(self, conn):
-      BaseAI.__init__(self, conn)
+  def run
+    1
+  end
+end
