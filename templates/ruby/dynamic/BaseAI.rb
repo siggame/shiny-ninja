@@ -14,6 +14,10 @@ class BaseAI
 %   endif
 % endfor
 
+  def BaseAI.iteration
+    @@iteration
+  end
+
   def startTurn
 % for model in models:
 %   if model.type == 'Model':
@@ -24,7 +28,7 @@ class BaseAI
 % endfor
 
     if not @initialized
-      @initialized = True
+      @initialized = true
       init
     end
     @@iteration += 1;
