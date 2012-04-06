@@ -6,7 +6,7 @@ abstract \
 % endif
 class ${model.name}\
 % if model.parent:
- extends ${model.parent.name} \
+ extends ${model.parent.name}\
 % endif
 
 {

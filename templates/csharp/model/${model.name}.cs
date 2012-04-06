@@ -9,7 +9,7 @@ abstract \
 % endif
 class ${model.name}\
 % if model.parent:
-: ${model.parent.name} \
+: ${model.parent.name}\
 % endif
 
 {
