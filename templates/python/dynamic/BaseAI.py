@@ -50,11 +50,12 @@ class BaseAI:
     return r
   #\endcond
 % for datum in globals:
-  ##${datum.doc}
-  @property
-  def ${datum.name}(self):
+  #\cond
+  def get${capitalize(datum.name)}(self):
     return library.get${capitalize(datum.name)}(self.connection)
-
+  #\endcond
+  ##${datum.doc}
+  ${datum.name} = property(get${capitalize(datum.name)})
 % endfor
   def __init__(self, connection):
     self.connection = connection
