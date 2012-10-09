@@ -29,6 +29,10 @@ class Match(DefaultGameWorld):
     self.${datum.name} = None
 % endfor
 
+  #this is here to be wrapped
+  def __del__(self):
+    pass
+
   def addPlayer(self, connection, type="player"):
     connection.type = type
     if len(self.players) >= 2 and type == "player":
@@ -60,7 +64,7 @@ class Match(DefaultGameWorld):
       return "Game is not full"
     if self.winner is not None or self.turn is not None:
       return "Game has already begun"
-    
+
     #TODO: START STUFF
     self.turn = self.players[-1]
     self.turnNumber = -1
@@ -96,7 +100,7 @@ class Match(DefaultGameWorld):
     #TODO: Make this check if a player won, and call declareWinner with a player if they did
     if self.turnNumber >= self.turnLimit:
        self.declareWinner(self.players[0], "Because I said so, this shold be removed")
-    
+
 
   def declareWinner(self, winner, reason=''):
     print "Player", self.getPlayerIndex(self.winner), "wins game", self.id
@@ -115,7 +119,8 @@ class Match(DefaultGameWorld):
     self.sendStatus([self.players[self.playerID]])
     self.playerID ^= 1
     self.turn = None
-    
+    self.objects.clear()
+
   def logPath(self):
     return "logs/" + str(self.id) + ".glog"
 
@@ -123,7 +128,7 @@ class Match(DefaultGameWorld):
 %   for func in model.functions:
 %     if not model.parent or func not in model.parent.functions:
   @derefArgs(${model.name}\
-%       for arg in func.arguments:  
+%       for arg in func.arguments:
 , \
 %         if isinstance(arg.type, Model):
 ${arg.type.name}\
@@ -133,12 +138,12 @@ None\
 %       endfor
 )
   def ${func.name}(self, object\
-%       for arg in func.arguments:  
+%       for arg in func.arguments:
 , ${arg.name}\
 %       endfor
 ):
     return object.${func.name}(\
-%       for arg in func.arguments:  
+%       for arg in func.arguments:
 ${arg.name}, \
 %       endfor
 )
