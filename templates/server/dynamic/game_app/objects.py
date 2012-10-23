@@ -15,13 +15,21 @@ class ${model.name}\
 %   endfor
 
   def toList(self):
-    value = [
+    value = [\
 %   for datum in model.data:
-      self.${datum.name},
+self.${datum.name}, \
 %   endfor
-      ]
+]
     return value
-
+  
+  # This will not work if the object has variables other than primitives
+  def toJson(self):
+    return dict(\
+%   for datum in model.data:
+${datum.name} = self.${datum.name}, \
+%   endfor
+)
+  
   def nextTurn(self):
     pass
 
@@ -44,5 +52,33 @@ class ${model.name}\
     pass
 
 %   endfor
+
+% endfor
+
+# The following are animations and do not need to have any logic added
+% for animation in animations:
+class ${animation.name[0].upper() + animation.name[1:]}Animation:
+  def __init__(self\
+%   for datum in animation.data:
+, ${datum.name}\
+%   endfor
+):
+%   for datum in animation.data:
+    self.${datum.name} = ${datum.name}
+%   endfor
+
+  def toList(self):
+    return ["${animation.name}", \
+%   for datum in animation.data:
+self.${datum.name}, \
+%   endfor
+]
+
+  def toJson(self):
+    return dict(type = "${animation.name}"\
+%   for datum in animation.data:
+, ${datum.name} = self.${datum.name}\
+%   endfor
+)
 
 % endfor

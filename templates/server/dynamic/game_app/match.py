@@ -7,6 +7,7 @@ from networking.sexpr.sexpr import *
 import os
 import itertools
 import scribe
+import jsonLogger
 
 Scribe = scribe.Scribe
 
@@ -22,11 +23,18 @@ class Match(DefaultGameWorld):
     self.controller = controller
     DefaultGameWorld.__init__(self)
     self.scribe = Scribe(self.logPath())
+    self.jsonLogger = jsonLogger.JsonLogger(self.logPath())
+    self.jsonAnimations = []
+    self.dictLog = dict(gameName = "${gameName}", turns = [])
     self.addPlayer(self.scribe, "spectator")
 
     #TODO: INITIALIZE THESE!
 % for datum in globals:
+%   if datum.name == "gameNumber":
+    self.${datum.name} = id
+%   else:
     self.${datum.name} = None
+%   endif
 % endfor
 
   #this is here to be wrapped
@@ -93,6 +101,22 @@ class Match(DefaultGameWorld):
       self.sendStatus([self.turn] +  self.spectators)
     else:
       self.sendStatus(self.spectators)
+    
+    self.dictLog['turns'].append(
+      dict(
+% for datum in globals:
+        ${datum.name} = self.${datum.name},
+% endfor
+% for model in models:
+%   if model.type == 'Model':
+        ${model.name}s = [i.toJson() for i in self.objects.values() if i.__class__ is ${model.name}],
+%   endif
+% endfor
+        animations = self.jsonAnimations
+      )
+    )
+    
+    self.jsonAnimations = []
     self.animations = ["animations"]
     return True
 
@@ -107,19 +131,24 @@ class Match(DefaultGameWorld):
     self.winner = winner
 
     msg = ["game-winner", self.id, self.winner.user, self.getPlayerIndex(self.winner), reason]
+    
+    self.dictLog["winnerID"] =  self.getPlayerIndex(self.winner)
+    self.dictLog["winReason"] = reason
+    self.jsonLogger.writeLog( self.dictLog )
+    
     self.scribe.writeSExpr(msg)
     self.scribe.finalize()
     self.removePlayer(self.scribe)
 
     for p in self.players + self.spectators:
       p.writeSExpr(msg)
-
+    
     self.sendStatus([self.turn])
     self.playerID ^= 1
     self.sendStatus([self.players[self.playerID]])
     self.playerID ^= 1
     self.turn = None
-    self.objects.clear()
+    #self.objects.clear()
 
   def logPath(self):
     return "logs/" + str(self.id) + ".glog"
@@ -194,6 +223,13 @@ ${arg.name}, \
     msg.extend(typeLists)
 
     return msg
+
+  def addAnimation(self, anim):
+    # generate the sexp
+    self.animations.append(anim.toList())
+    # generate the json
+    self.jsonAnimations.append(anim.toJson())
+  
 
 
 loadClassDefaults()
