@@ -15,12 +15,11 @@ class ${model.name}\
 %   endfor
 
   def toList(self):
-    value = [\
+    return [\
 %   for datum in model.data:
 self.${datum.name}, \
 %   endfor
 ]
-    return value
   
   # This will not work if the object has variables other than primitives
   def toJson(self):
