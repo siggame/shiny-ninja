@@ -151,7 +151,7 @@ class Match(DefaultGameWorld):
     #self.objects.clear()
 
   def logPath(self):
-    return "logs/" + str(self.id) + ".glog"
+    return "logs/" + str(self.id)
 
 % for model in models:
 %   for func in model.functions:
