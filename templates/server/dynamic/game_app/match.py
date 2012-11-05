@@ -23,9 +23,10 @@ class Match(DefaultGameWorld):
     self.controller = controller
     DefaultGameWorld.__init__(self)
     self.scribe = Scribe(self.logPath())
-    self.jsonLogger = jsonLogger.JsonLogger(self.logPath())
-    self.jsonAnimations = []
-    self.dictLog = dict(gameName = "${gameName}", turns = [])
+    if( self.logJson ):
+      self.jsonLogger = jsonLogger.JsonLogger(self.logPath())
+      self.jsonAnimations = []
+      self.dictLog = dict(gameName = "${gameName}", turns = [])
     self.addPlayer(self.scribe, "spectator")
 
     #TODO: INITIALIZE THESE!
@@ -102,21 +103,22 @@ class Match(DefaultGameWorld):
     else:
       self.sendStatus(self.spectators)
     
-    self.dictLog['turns'].append(
-      dict(
+    if( self.logJson ):
+      self.dictLog['turns'].append(
+        dict(
 % for datum in globals:
-        ${datum.name} = self.${datum.name},
+          ${datum.name} = self.${datum.name},
 % endfor
 % for model in models:
 %   if model.type == 'Model':
-        ${model.name}s = [i.toJson() for i in self.objects.values() if i.__class__ is ${model.name}],
+          ${model.name}s = [i.toJson() for i in self.objects.values() if i.__class__ is ${model.name}],
 %   endif
 % endfor
-        animations = self.jsonAnimations
+          animations = self.jsonAnimations
+        )
       )
-    )
-    
-    self.jsonAnimations = []
+      self.jsonAnimations = []
+
     self.animations = ["animations"]
     return True
 
@@ -132,9 +134,10 @@ class Match(DefaultGameWorld):
 
     msg = ["game-winner", self.id, self.winner.user, self.getPlayerIndex(self.winner), reason]
     
-    self.dictLog["winnerID"] =  self.getPlayerIndex(self.winner)
-    self.dictLog["winReason"] = reason
-    self.jsonLogger.writeLog( self.dictLog )
+    if( self.logJson ):
+      self.dictLog["winnerID"] =  self.getPlayerIndex(self.winner)
+      self.dictLog["winReason"] = reason
+      self.jsonLogger.writeLog( self.dictLog )
     
     self.scribe.writeSExpr(msg)
     self.scribe.finalize()
@@ -228,7 +231,8 @@ ${arg.name}, \
     # generate the sexp
     self.animations.append(anim.toList())
     # generate the json
-    self.jsonAnimations.append(anim.toJson())
+    if( logJson ):
+      self.jsonAnimations.append(anim.toJson())
   
 
 
