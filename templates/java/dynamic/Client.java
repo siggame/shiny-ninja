@@ -1,3 +1,5 @@
+package java;
+
 import com.sun.jna.Library;
 import com.sun.jna.Pointer;
 import com.sun.jna.Native;
@@ -17,7 +19,7 @@ public interface Client extends Library {
   int networkLoop(Pointer connection);
 
 
-    //commands
+    // commands
 % for  model in models:
 %   for func in model.functions:
   int ${lowercase(model.name)}${capitalize(func.name)}(Pointer object\
@@ -29,7 +31,7 @@ ${conversions[arg.type]} ${arg.name}\
 %   endfor
 % endfor
 
-    //accessors
+    // accessors
 % for datum in globals:
   ${conversions[datum.type]} get${capitalize(datum.name)}(Pointer connection);
 % endfor
@@ -42,7 +44,7 @@ ${conversions[arg.type]} ${arg.name}\
 % endfor
 
 
-    //getters
+    // getters
 % for model in models:
 %   for datum in model.data:
   ${conversions[datum.type]} ${lowercase(model.name)}Get${capitalize(datum.name)}(Pointer ptr);
@@ -50,7 +52,7 @@ ${conversions[arg.type]} ${arg.name}\
 
 % endfor
 
-    //properties
+    // properties
 % for  model in models:
 %   for prop in model.properties:
   ${conversions[prop.result]} ${lowercase(model.name)}${capitalize(prop.name)}(Pointer object\

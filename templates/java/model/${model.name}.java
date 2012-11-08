@@ -1,6 +1,9 @@
+package java;
+
 import com.sun.jna.Pointer;
 
 ///${model.doc}
+public \
 % if model.type == 'virtual':
 abstract \
 % endif
