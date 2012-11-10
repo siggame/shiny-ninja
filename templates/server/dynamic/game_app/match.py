@@ -231,7 +231,7 @@ ${arg.name}, \
     # generate the sexp
     self.animations.append(anim.toList())
     # generate the json
-    if( logJson ):
+    if( self.logJson ):
       self.jsonAnimations.append(anim.toJson())
   
 
