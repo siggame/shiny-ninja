@@ -23,3 +23,7 @@ class ObjectHolder(dict):
     if value in self.${lowercase(model.plural)}:
       self.${lowercase(model.plural)}.remove(value)
 % endfor
+
+  def clear(self):
+    for i in self.keys():
+      del self[i]

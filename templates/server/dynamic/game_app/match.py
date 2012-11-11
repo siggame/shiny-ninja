@@ -113,6 +113,7 @@ class Match(DefaultGameWorld):
     self.sendStatus([self.players[self.playerID]])
     self.playerID ^= 1
     self.turn = None
+    self.objects.clear()
     
   def logPath(self):
     return "logs/" + str(self.id) + ".glog"
