@@ -7,6 +7,7 @@ from networking.sexpr.sexpr import *
 import os
 import itertools
 import scribe
+import jsonLogger
 
 Scribe = scribe.Scribe
 
@@ -22,12 +23,24 @@ class Match(DefaultGameWorld):
     self.controller = controller
     DefaultGameWorld.__init__(self)
     self.scribe = Scribe(self.logPath())
+    if( self.logJson ):
+      self.jsonLogger = jsonLogger.JsonLogger(self.logPath())
+      self.jsonAnimations = []
+      self.dictLog = dict(gameName = "${gameName}", turns = [])
     self.addPlayer(self.scribe, "spectator")
 
     #TODO: INITIALIZE THESE!
 % for datum in globals:
+%   if datum.name == "gameNumber":
+    self.${datum.name} = id
+%   else:
     self.${datum.name} = None
+%   endif
 % endfor
+
+  #this is here to be wrapped
+  def __del__(self):
+    pass
 
   def addPlayer(self, connection, type="player"):
     connection.type = type
@@ -36,7 +49,7 @@ class Match(DefaultGameWorld):
     if type == "player":
       self.players.append(connection)
       try:
-        self.addObject(Player, [connection.screenName])
+        self.addObject(Player, [connection.screenName, self.startTime])
       except TypeError:
         raise TypeError("Someone forgot to add the extra attributes to the Player object initialization")
     elif type == "spectator":
@@ -60,7 +73,7 @@ class Match(DefaultGameWorld):
       return "Game is not full"
     if self.winner is not None or self.turn is not None:
       return "Game has already begun"
-    
+
     #TODO: START STUFF
     self.turn = self.players[-1]
     self.turnNumber = -1
@@ -89,40 +102,65 @@ class Match(DefaultGameWorld):
       self.sendStatus([self.turn] +  self.spectators)
     else:
       self.sendStatus(self.spectators)
+    
+    if( self.logJson ):
+      self.dictLog['turns'].append(
+        dict(
+% for datum in globals:
+          ${datum.name} = self.${datum.name},
+% endfor
+% for model in models:
+%   if model.type == 'Model':
+          ${model.name}s = [i.toJson() for i in self.objects.values() if i.__class__ is ${model.name}],
+%   endif
+% endfor
+          animations = self.jsonAnimations
+        )
+      )
+      self.jsonAnimations = []
+
     self.animations = ["animations"]
     return True
 
   def checkWinner(self):
     #TODO: Make this check if a player won, and call declareWinner with a player if they did
-    pass
+    if self.turnNumber >= self.turnLimit:
+       self.declareWinner(self.players[0], "Because I said so, this shold be removed")
+
 
   def declareWinner(self, winner, reason=''):
     print "Player", self.getPlayerIndex(self.winner), "wins game", self.id
     self.winner = winner
 
     msg = ["game-winner", self.id, self.winner.user, self.getPlayerIndex(self.winner), reason]
+    
+    if( self.logJson ):
+      self.dictLog["winnerID"] =  self.getPlayerIndex(self.winner)
+      self.dictLog["winReason"] = reason
+      self.jsonLogger.writeLog( self.dictLog )
+    
     self.scribe.writeSExpr(msg)
     self.scribe.finalize()
     self.removePlayer(self.scribe)
 
     for p in self.players + self.spectators:
       p.writeSExpr(msg)
-
+    
     self.sendStatus([self.turn])
     self.playerID ^= 1
     self.sendStatus([self.players[self.playerID]])
     self.playerID ^= 1
     self.turn = None
     self.objects.clear()
-    
+
   def logPath(self):
-    return "logs/" + str(self.id) + ".glog"
+    return "logs/" + str(self.id)
 
 % for model in models:
 %   for func in model.functions:
 %     if not model.parent or func not in model.parent.functions:
   @derefArgs(${model.name}\
-%       for arg in func.arguments:  
+%       for arg in func.arguments:
 , \
 %         if isinstance(arg.type, Model):
 ${arg.type.name}\
@@ -132,12 +170,12 @@ None\
 %       endfor
 )
   def ${func.name}(self, object\
-%       for arg in func.arguments:  
+%       for arg in func.arguments:
 , ${arg.name}\
 %       endfor
 ):
     return object.${func.name}(\
-%       for arg in func.arguments:  
+%       for arg in func.arguments:
 ${arg.name}, \
 %       endfor
 )
@@ -188,6 +226,14 @@ ${arg.name}, \
     msg.extend(typeLists)
 
     return msg
+
+  def addAnimation(self, anim):
+    # generate the sexp
+    self.animations.append(anim.toList())
+    # generate the json
+    if( self.logJson ):
+      self.jsonAnimations.append(anim.toJson())
+  
 
 
 loadClassDefaults()

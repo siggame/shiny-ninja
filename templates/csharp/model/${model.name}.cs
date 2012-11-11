@@ -99,20 +99,24 @@ ${arg.name}\
     //getters
 
 % for datum in model.data:
+
   ///${datum.doc}
   public \
 %   if model.parent and datum in model.parent.data:
 new \
 %   endif
-${types[datum.type]} get${capitalize(datum.name)}()
+${types[datum.type]} ${capitalize(datum.name)}
   {
-    validify();
-    ${fromClient[datum.type]} value = Client.${lowercase(model.name)}Get${capitalize(datum.name)}(ptr);
-%   if datum.type is str:
-    return Marshal.PtrToStringAuto(value);
-%   else:
-    return value;
-%   endif
+    get
+    {
+      validify();
+      ${fromClient[datum.type]} value = Client.${lowercase(model.name)}Get${capitalize(datum.name)}(ptr);
+%     if datum.type is str:
+      return Marshal.PtrToStringAuto(value);
+%     else:
+      return value;
+%     endif
+    }
   }
 % endfor
 
@@ -155,3 +159,4 @@ ${types[arg.type]} ${arg.name}\
 
 %   endfor
 }
+

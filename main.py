@@ -3,7 +3,7 @@
 import structures
 import argparse
 import runpy
-import os.path
+import os.path, os
 import conversions
 import copy
 
@@ -41,7 +41,7 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Run The Codegen To Automatically Generate Some Codez')
   parser.add_argument('-d', '--data', dest='dataPyPath', default='./data.py', help='The Path To data.py')
   parser.add_argument('-o', '--output', dest='outDir', default='./output', help='The output of the codegen.')
-  parser.add_argument('-t', '--tempalte', dest='templatePath', default='./templates', help='The location of the templates')
+  parser.add_argument('-t', '--template', dest='templatePath', default='./templates', help='The location of the templates')
 
   args = parser.parse_args()
 
@@ -62,3 +62,10 @@ if __name__ == '__main__':
         m = runpy.run_path(writerPath, g)
         w = m['writer']()
         w.write(modulePath, outPath, copy.copy(objects))
+
+  # rename the plugins/GAME_NAME dir to the game name, because at the moment folders can't be dynamically named
+  try:
+    os.rename(output + "/plugins/GAME_NAME", output + "/plugins/" + objects['gameName'].lower())
+  except:
+    print("Error renaming plugins dir")
+
