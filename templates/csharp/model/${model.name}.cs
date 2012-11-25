@@ -61,9 +61,9 @@ bool validify()
 % for func in model.functions:
   ///${func.doc}
 %   if model.parent and func in model.parent.functions:
-  public new int ${func.name}(\
+  public new bool ${func.name}(\
 %   else:
-  public int ${func.name}(\
+  public bool ${func.name}(\
 %   endif
 %   for arg in func.arguments:
 %     if func.arguments[0] is not arg:
@@ -83,7 +83,7 @@ ${types[arg.type]} ${arg.name}\
     ${arg.name}.validify();
 %     endif
 %   endfor
-    return Client.${lowercase(model.name)}${capitalize(func.name)}(ptr\
+    return (Client.${lowercase(model.name)}${capitalize(func.name)}(ptr\
 %   for arg in func.arguments:
 , \
 %     if isinstance(arg.type, Model):
@@ -92,7 +92,7 @@ ${arg.name}.ptr\
 ${arg.name}\
 %     endif
 %   endfor
-);
+) == 1) ? true : false;
   }
 % endfor
 

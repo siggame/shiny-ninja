@@ -36,7 +36,7 @@ class ${model.name} \
   // Actions
 % for func in model.functions:
   ///${func.doc}
-  int ${func.name}(\
+  bool ${func.name}(\
 %   for arg in func.arguments:
 %     if func.arguments[0] != arg:
 , \

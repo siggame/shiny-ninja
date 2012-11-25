@@ -52,7 +52,7 @@ class ${model.name}\
 
 % for func in model.functions:
   ///${func.doc}
-  int ${func.name}(\
+  boolean ${func.name}(\
 %   for arg in func.arguments:
 %     if func.arguments[0] is not arg:
 , \
@@ -71,7 +71,7 @@ ${conversions[arg.type]} ${arg.name}\
     ${arg.name}.validify();
 %     endif
 %   endfor
-    return Client.INSTANCE.${lowercase(model.name)}${capitalize(func.name)}(ptr\
+    return (Client.INSTANCE.${lowercase(model.name)}${capitalize(func.name)}(ptr\
 %   for arg in func.arguments:
 , \
 %     if isinstance(arg.type, Model):
@@ -80,7 +80,7 @@ ${arg.name}.ptr\
 ${arg.name}\
 %     endif
 %   endfor
-);
+) == 1) ? true : false;
   }
 % endfor
 
