@@ -92,7 +92,7 @@ ${arg.name}.ptr\
 ${arg.name}\
 %     endif
 %   endfor
-) == 1) ? true : false;
+) == 0) ? false : true;
   }
 % endfor
 
