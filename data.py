@@ -75,6 +75,7 @@ Fish = Model('Fish',
     Variable('isVisible', int, 'The visibleness of the fish'),
     Variable('attacksLeft', int, 'The number of attacks a fish has left'),
     Variable('range',int,'The attack range of the fish'),
+    Variable('species',str', The fish species'),
     ],
   functions=[
     Function('move', [Variable('x', int), Variable('y', int)], 
